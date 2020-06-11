@@ -1,8 +1,9 @@
 {
-    "port": "/dev/ttyS3",
+    "port": "/dev/tty.usbserial-1410",
     "baud": "115200",
-    "pointsx": 20,
-    "pointsy": 20,
-    "distx": 100,
-    "disty": 80
+    "output_file": "output.csv",
+    "points_x": 3,
+    "points_y": 3,
+    "dist_x": 50,
+    "dist_y": 40
 }
