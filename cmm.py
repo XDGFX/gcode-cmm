@@ -46,6 +46,20 @@ def getch():
     return ch
 
 
+class CMM:
+    point = 0  # Current point out of total
+    pointx = 0  # Current x point
+    pointy = 0  # Current y point
+    startx = 0  # Start x position / mm
+    starty = 0  # Start y position / mm
+    startz = 0  # Start z position / mm
+
+    # Current head position
+    pos["x"] = 0
+    pos["y"] = 0
+    pos["z"] = 0
+
+
 startup_gcode = """
 G28 ; Home all axes
 G1 Z50 X100 F3000 ; Move Z Axis up to allow attachment of CMM
@@ -61,6 +75,58 @@ help_text = f"\033[95m\033[1mQ\033[0m: Quit\033[0m\
 
 settings = read_settings()
 # s = open_serial()
+
+# Send startup GCODE and update variables correctly
+print("Sending startup GCODE")
+send_gcode(startup_gcode)
+CMM.pos["x"] = 100
+CMM.pos["z"] = 50
+
+# Perform initial position calibration
+print(f"\033[1mINITIAL CALIBRATION\033[0m")
+print(f"\033[95m\033[1mE\033[0m: Z Up\033[0m\
+    \033[95m\033[1mQ\033[0m: Z Down\033[0m\
+    \033[95m\033[1mW\033[0m: Y Up\033[0m\
+    \033[95m\033[1mS\033[0m: Y Down\033[0m\
+    \033[95m\033[1mA\033[0m: X Up\033[0m\
+    \033[95m\033[1mD\033[0m: X Down\033[0m\
+    \033[95m\033[1mY\033[0m: Accept Start Position\033[0m")
+
+while True:
+    char = getch()
+
+    if (char == "e"):
+        # Increment Z by 1mm and send new position
+        CMM.pos["z"] += 1
+        send_gcode("G0Z" + str(CMM.pos["z"]))
+
+    if (char == "q"):
+        # Decrement Z by 1mm and send new position
+        CMM.pos["z"] -= 1
+        send_gcode("G0Z" + str(CMM.pos["z"]))
+
+    elif (char == "w"):
+        # Increment Y by 5mm and send new position
+        CMM.pos["y"] += 5
+        send_gcode("G0Y" + str(CMM.pos["y"]))
+
+    elif (char == "s"):
+        # Decrement Y by 5mm and send new position
+        CMM.pos["y"] -= 5
+        send_gcode("G0Y" + str(CMM.pos["y"]))
+
+    elif (char == "a"):
+        # Decrement X by 5mm and send new position
+        CMM.pos["x"] -= 5
+        send_gcode("G0X" + str(CMM.pos["x"]))
+
+    elif (char == "d"):
+        # Increment X by 5mm and send new position
+        CMM.pos["x"] += 5
+        send_gcode("G0X" + str(CMM.pos["x"]))
+
+    elif (char == "y"):
+        print("Accepted position")
 
 
 print(help_text)

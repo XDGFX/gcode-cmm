@@ -1,4 +1,8 @@
 {
     "port": "/dev/ttyS3",
-    "baud": "115200"
+    "baud": "115200",
+    "pointsx": 20,
+    "pointsy": 20,
+    "distx": 100,
+    "disty": 80
 }
