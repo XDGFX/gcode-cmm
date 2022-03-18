@@ -187,7 +187,7 @@ if mode == "Rectangle":
         char = getch()
 
         if (char == "x"):
-            print("Are you sure you want to quit? [y/n]: ", end="")
+            print("Are you sure you want to quit? [y/n]: ", end="", flush=True)
 
             while True:
                 char = getch()
@@ -197,7 +197,7 @@ if mode == "Rectangle":
                     print("Not exiting...")
                     break
                 else:
-                    print("Please input y or n: ", end="")
+                    print("Please input y or n: ", end="", flush=True)
 
         if (char == "w"):
             # Increment Z by 1mm and send new position
@@ -265,7 +265,7 @@ elif mode == "Free":
         char = getch()
 
         if (char == "x"):
-            print("Are you sure you want to quit? [y/n]: ", end="")
+            print("Are you sure you want to quit? [y/n]: ", end="", flush=True)
 
             while True:
                 char = getch()
@@ -275,7 +275,7 @@ elif mode == "Free":
                     print("Not exiting...")
                     break
                 else:
-                    print("Please input y or n: ", end="")
+                    print("Please input y or n: ", end="", flush=True)
 
         # X
         if (char == "d") or (char == "l"):
@@ -304,20 +304,20 @@ elif mode == "Free":
             send_gcode("G0Y" + str(CMM.pos[1]))
 
         # Z
-        if (char == "e") or (char == "l"):
+        if (char == "e") or (char == "o"):
             # Increment Z and send new position
-            inc = 1 if (char == "d") else 0.1
+            inc = 1 if (char == "e") else 0.1
             CMM.pos[2] += inc
             send_gcode("G0Z" + str(CMM.pos[2]))
 
-        if (char == "a") or (char == "j"):
+        if (char == "q") or (char == "u"):
             # Decrement Z and send new position
-            inc = 1 if (char == "a") else 0.1
+            inc = 1 if (char == "q") else 0.1
             CMM.pos[2] -= inc
             send_gcode("G0Z" + str(CMM.pos[2]))
 
         if (char == "p"):
-            CMM.datapoints.append(CMM.pos)
+            CMM.datapoints.append(list(CMM.pos))
 
         if (char == "z"):
             CMM.datapoints.pop()
